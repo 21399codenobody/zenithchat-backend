@@ -1,11 +1,25 @@
 import { Router } from "express";
-import { globalSearch } from "@/controllers/searchController.js";
+import {
+    createStory,
+    getFeedStories,
+    getUserStoryArchive,
+    viewStory,
+    deleteStory
+} from "@/controllers/storyController.js";
 import { protect, requireCompleteProfile } from "@/middlewares/authMiddleware.js";
 
-const searchRouter = Router();
+const storyRouter = Router();
 
-searchRouter.use(protect, requireCompleteProfile);
 
-searchRouter.get('/', globalSearch);
+storyRouter.use(protect, requireCompleteProfile);
 
-export default searchRouter;
+
+storyRouter.post(['/', '', '/create'], createStory);
+
+
+storyRouter.get('/feed', getFeedStories);
+storyRouter.get('/archive/:userId', getUserStoryArchive);
+storyRouter.post('/:storyId/view', viewStory);
+storyRouter.delete('/:storyId', deleteStory);
+
+export default storyRouter;
